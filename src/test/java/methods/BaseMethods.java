@@ -1,6 +1,8 @@
 package methods;
 
 import driver.BaseTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +11,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
@@ -18,6 +19,7 @@ public class BaseMethods {
     private final WebDriver driver;
     private final FluentWait<WebDriver> driverWait;
     private final JavascriptExecutor jsdriver;
+    Logger logger = LogManager.getLogger(BaseMethods.class);
 
     public BaseMethods(){
         driver = BaseTest.driver;
@@ -50,11 +52,20 @@ public class BaseMethods {
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(by));
         findElement(by).sendKeys(text);
     }
+    public void sendKeys(By by, String text, long waitSeconds){
+        if (waitSeconds != 0){
+            waitBySeconds(waitSeconds);
+        }
+        driverWait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        findElement(by).sendKeys(text);
+    }
     public boolean isElementVisible(By by){
         try{
             driverWait.until(ExpectedConditions.visibilityOfElementLocated(by));
+            logger.info("Login successful");
             return true;
         }catch (Exception e){
+            logger.info("Login Failed");
             return false;
         }
     }
@@ -70,24 +81,12 @@ public class BaseMethods {
         action.moveToElement(findElement(by)).build().perform();
     }
 
-    public void scrollDown(String xpath) {
-        WebElement element = driver.findElement(By.xpath(xpath));
-        jsdriver.executeScript("arguments[0].scrollIntoView()", element);
-    }
     public Select getSelect(By by){
         return new Select(findElement(by));
     }
+
     public void selectByText(By by, String text){
         getSelect(by).selectByVisibleText(text);
-    }
-    public String getAttribute(By by, String attributeName){
-        return findElement(by).getAttribute(attributeName);
-    }
-    public String getText(By by){
-        return findElement(by).getText();
-    }
-    public String getValue(By by){
-        return jsdriver.executeScript("return arguments[0].value;",findElement(by)).toString();
     }
 
     public void waitBySeconds(long seconds){
@@ -98,6 +97,9 @@ public class BaseMethods {
         }
     }
 
+    public String getText(By by){
+        return findElement(by).getText();
+    }
     public void hover(By by) {
         WebElement element = findElement(by);
         Actions actions = new Actions(driver);

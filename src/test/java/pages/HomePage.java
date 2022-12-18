@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 public class HomePage {
     private final BaseMethods method;
 
+    private final String selectProduct = "//div[@id='content']/div/div[1]/div/div[2]/ul/li[%d]";
     private final By logoClick = By.cssSelector(".logo-icon>a");
 
     private final By pointCatalog = By.xpath("//a[@href='puan-katalogu']");
@@ -33,34 +34,34 @@ public class HomePage {
     }
 
     public void actionsHomePage(){
+        bookListFilter();
+        addProductToCart();
+        removeProductFavorites();
+        method.waitBySeconds(1);
+    }
+    public void bookListFilter(){
         method.click(logoClick);
-        method.click(pointCatalog, 2);
-        method.scrollAction(classicButton, 2);
-        method.click(classicButton, 2);
-        method.waitBySeconds(2);
+        method.click(pointCatalog);
+        method.scrollAction(classicButton, 1);
+        method.click(classicButton);
         method.selectByText(sortButton,"Yüksek Oylama");
-        method.waitBySeconds(2);
         method.hover(allBookButton);
-        method.click(hobiButton, 2);
-        method.waitBySeconds(2);
+        method.click(hobiButton);
     }
     public void addProductToCart(){
         Integer number = (1 + (int) (Math.random() * 14));
-        var product = By.xpath(String.format("//ul[@class='product-grid jcarousel-skin-opencart']/li[%d]",number));
+        var product = By.xpath(String.format(selectProduct,number));
 
-        method.hover(product);
-        method.waitBySeconds(2);
-        method.click(product);
-        method.waitBySeconds(2);
+        method.scrollAction(product);
+        method.click(product,2);
         method.click(addCartButton);
-        method.waitBySeconds(2);
+    }
+    public void removeProductFavorites(){
         method.scrollAction(myListButton);
+        method.waitBySeconds(1);
         method.hover(myListButton);
         method.click(favoriteButton);
-        method.waitBySeconds(3);
         method.scrollAction(removeProduct);
-        method.waitBySeconds(2);
-        method.click(removeProductButton);
-        method.waitBySeconds(2);
+        method.click(removeProductButton,2);
     }
 }

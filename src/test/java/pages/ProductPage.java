@@ -1,6 +1,8 @@
 package pages;
 
 import methods.BaseMethods;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -12,6 +14,7 @@ import java.util.List;
 
 public class ProductPage {
     private final BaseMethods method;
+    Logger logger = LogManager.getLogger(ProductPage.class);
     private final Random rnd;
     private final int maxProductCountInPage = 20;
     private final String searchText = "Oyuncak";
@@ -22,7 +25,6 @@ public class ProductPage {
     private final By scrollBook = By.xpath("//div[@class='product-list']/div[@class='product-cr'][6]");
     private final By favoriteButton = By.xpath("//*[@class='menu top my-list']/ul/li/div/ul/li[1]/a");
     private final By myListButton = By.xpath("//*[@class='menu top my-list']/ul/li[1]/a");
-
     private final By favoriteProductGridElement = By.cssSelector(".product-cr");
 
     public ProductPage(){
@@ -32,16 +34,16 @@ public class ProductPage {
 
     public void searchAndFavoriteProducts(){
         searchProduct();
-        method.waitBySeconds(3);
+        method.waitBySeconds(1);
         addProductToFavorite();
-        method.waitBySeconds(3);
+        method.waitBySeconds(1);
         controlFavoriteProductCount();
     }
 
     private void searchProduct(){
         method.sendKeys(searchProduct, searchText);
         method.click(searchButton);
-        method.scrollAction(scrollBook, 3);
+        method.scrollAction(scrollBook, 2);
     }
 
     private void addProductToFavorite(){
@@ -58,8 +60,8 @@ public class ProductPage {
         for (int i=0; i<favoriteProductCount; i++){
             var product = By.xpath(String.format(addToFavoriteXPath, arr[i]));
             method.scrollAction(product);
-            method.click(product, 2);
-            method.waitBySeconds(2);
+            method.click(product, 1);
+            method.waitBySeconds(1);
         }
 
         method.scrollAction(myListButton);
@@ -69,6 +71,7 @@ public class ProductPage {
 
     private void controlFavoriteProductCount(){
         List<WebElement> elements = method.findElements(favoriteProductGridElement);
-        Assert.assertEquals(4, elements.size());
+        Assert.assertEquals("Products in favorites are wrong.",4, elements.size());
+        logger.info("Products in favorites are true.");
     }
 }

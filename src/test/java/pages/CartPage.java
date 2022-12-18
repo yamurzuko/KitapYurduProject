@@ -1,11 +1,16 @@
 package pages;
 
 import methods.BaseMethods;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
 public class CartPage {
     private final BaseMethods method;
+
+    Logger logger = LogManager.getLogger(CartPage.class);
 
     private final String name = "Ugur";
 
@@ -45,44 +50,75 @@ public class CartPage {
 
     private final By continueButton = By.cssSelector("#button-checkout-continue");
 
-    private final By newAddress = By.cssSelector("//div[@id='shipping-tabs']/a[2]");
+    private final By newAddress = By.xpath("//div[@id='shipping-tabs']/a[2]");
 
+    private final By cardHolderName = By.xpath("//*[@id='form-credit-card']/div[2]/table/tbody/tr[3]/td/input");
+
+    private final By cardNumber1 = By.xpath("//*[@id='form-credit-card']/div[2]/table/tbody/tr[5]/td/input[1]");
+    private final By cardNumber2 = By.xpath("//*[@id='form-credit-card']/div[2]/table/tbody/tr[5]/td/input[2]");
+    private final By cardNumber3 = By.xpath("//*[@id='form-credit-card']/div[2]/table/tbody/tr[5]/td/input[3]");
+    private final By cardNumber4 = By.xpath("//*[@id='form-credit-card']/div[2]/table/tbody/tr[5]/td/input[4]");
+    private final By selectDate = By.xpath("//*[@id='form-credit-card']/div[2]/table/tbody/tr[7]/td/select[1]");
+    private final By selectDate1 = By.xpath("//*[@id='form-credit-card']/div[2]/table/tbody/tr[7]/td/select[2]");
+    private final By cvvNumber = By.xpath("//*[@id='form-credit-card']/div[2]/table/tbody/tr[9]/td/input");
+    private final By error = By.xpath("//*[@id='form-credit-card']/div[2]/table/tbody/tr[5]/td/span");
+    private final By logoClick = By.cssSelector(".logo-icon>a");
+    private final By logoutHover = By.xpath("//div[@class='menu top login']/ul/li/a/b");
+    private final By logoutButton = By.xpath("//div[@class='menu top login']/ul/li/div/ul/li[4]/a");
     Integer number = (1 + (int) (Math.random() * 15));
 
     public CartPage(){
         method = new BaseMethods();
     }
 
-    public void goToCart(){
+    public void cartActions(){
+        goToCartAndUpdate();
+        updateToAddress();
+        method.click(continueButton);
+        method.click(continueButton);
+        paymentMethod();
+        method.click(continueButton);
+        errorPayment();
+        logoutAccount();
+    }
+    public void goToCartAndUpdate(){
         method.click(myCart);
-        method.waitBySeconds(1);
         method.click(goToCartButton);
-        method.waitBySeconds(2);
-        method.sendKeys(productCount,number.toString());
-        method.waitBySeconds(1);
+        method.sendKeys(productCount,number.toString(),1);
         method.findElement(productCount).sendKeys(Keys.ENTER);
-        method.waitBySeconds(2);
         method.click(buyButton);
-        method.waitBySeconds(2);
+    }
+    public void updateToAddress(){
         method.click(newAddress);
-        method.waitBySeconds(2);
-        method.sendKeys(insertName,name);
-        method.waitBySeconds(2);
-        method.sendKeys(insertSurname,surname);
-        method.waitBySeconds(2);
+        method.sendKeys(insertName,name,1);
+        method.sendKeys(insertSurname,surname,1);
         method.selectByText(insertCountry,country);
-        method.waitBySeconds(2);
         method.selectByText(insertCity,city);
-        method.waitBySeconds(2);
         method.selectByText(insertDistrict,distict);
-        method.waitBySeconds(2);
-        method.sendKeys(insertAddress,address);
-        method.waitBySeconds(2);
-        method.sendKeys(insertPhone,phone.toString());
-        method.waitBySeconds(2);
-        method.click(continueButton);
-        method.waitBySeconds(2);
-        method.click(continueButton);
-        method.waitBySeconds(2);
+        method.sendKeys(insertAddress,address,1);
+        method.sendKeys(insertPhone,phone.toString(),1);
+    }
+    public void paymentMethod(){
+        method.sendKeys(cardHolderName,"sadasd",1);
+        method.sendKeys(cardNumber1,"1234",1);
+        method.sendKeys(cardNumber2,"5678",1);
+        method.sendKeys(cardNumber3,"9876",1);
+        method.sendKeys(cardNumber4,"5432",1);
+        method.selectByText(selectDate,"04");
+        method.selectByText(selectDate1,"1996");
+        method.sendKeys(cvvNumber,"453",1);
+    }
+    public void errorPayment(){
+
+        String expected = "Kart numarası geçersiz. Kontrol ediniz!";
+        String actual = method.getText(error);
+
+        Assert.assertEquals("Card info is wrong!",expected,actual);
+        logger.info("Card info is correct.");
+    }
+    public void logoutAccount(){
+        method.click(logoClick);
+        method.hover(logoutHover);
+        method.click(logoutButton);
     }
 }

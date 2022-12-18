@@ -16,6 +16,6 @@ public class CartPageTests extends BaseTest {
         getProductPage().searchAndFavoriteProducts();
         getHomePage().actionsHomePage();
         getHomePage().addProductToCart();
-        getCartPage().goToCart();
+        getCartPage().cartActions();
     }
 }

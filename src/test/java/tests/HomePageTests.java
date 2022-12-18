@@ -2,9 +2,6 @@ package tests;
 
 import driver.BaseTest;
 import org.junit.Test;
-import pages.HomePage;
-import pages.LoginPage;
-import pages.ProductPage;
 
 public class HomePageTests extends BaseTest {
 
@@ -14,6 +11,5 @@ public class HomePageTests extends BaseTest {
         getLoginPage().login();
         getProductPage().searchAndFavoriteProducts();
         getHomePage().actionsHomePage();
-        getHomePage().addProductToCart();
     }
 }
