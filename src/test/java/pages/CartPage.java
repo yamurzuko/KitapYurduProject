@@ -32,7 +32,7 @@ public class CartPage {
 
     private final By productCount = By.xpath("//div[@class='cart-info']/table/tbody/tr/td[4]/form/input");
 
-    private final By buyButton = By.xpath("//div[@class='cart-info']/table/thead/tr/td[8]/a");
+    private final By buyButton = By.cssSelector(".right>.red.button");
 
     private final By insertName = By.cssSelector("#address-firstname-companyname");
 
@@ -65,7 +65,7 @@ public class CartPage {
     private final By logoClick = By.cssSelector(".logo-icon>a");
     private final By logoutHover = By.xpath("//div[@class='menu top login']/ul/li/a/b");
     private final By logoutButton = By.xpath("//div[@class='menu top login']/ul/li/div/ul/li[4]/a");
-    Integer number = (1 + (int) (Math.random() * 15));
+    Integer number = (1 + (int) (Math.random() * 5));
 
     public CartPage(){
         method = new BaseMethods();
@@ -74,39 +74,42 @@ public class CartPage {
     public void cartActions(){
         goToCartAndUpdate();
         updateToAddress();
-        method.click(continueButton);
-        method.click(continueButton);
+        method.click(continueButton,1);
+        method.click(continueButton,3);
         paymentMethod();
-        method.click(continueButton);
+        method.click(continueButton,1);
         errorPayment();
+        method.waitBySeconds(2);
         logoutAccount();
     }
     public void goToCartAndUpdate(){
-        method.click(myCart);
-        method.click(goToCartButton);
+        method.click(myCart,1);
+        method.click(goToCartButton,1);
         method.sendKeys(productCount,number.toString(),1);
+        method.waitBySeconds(1);
         method.findElement(productCount).sendKeys(Keys.ENTER);
-        method.click(buyButton);
+        method.click(buyButton,4);
     }
     public void updateToAddress(){
-        method.click(newAddress);
+        method.click(newAddress,1);
         method.sendKeys(insertName,name,1);
-        method.sendKeys(insertSurname,surname,1);
+        method.sendKeys(insertSurname,surname);
         method.selectByText(insertCountry,country);
         method.selectByText(insertCity,city);
+        method.waitBySeconds(1);
         method.selectByText(insertDistrict,distict);
-        method.sendKeys(insertAddress,address,1);
-        method.sendKeys(insertPhone,phone.toString(),1);
+        method.sendKeys(insertAddress,address);
+        method.sendKeys(insertPhone,phone.toString());
     }
     public void paymentMethod(){
         method.sendKeys(cardHolderName,"sadasd",1);
-        method.sendKeys(cardNumber1,"1234",1);
-        method.sendKeys(cardNumber2,"5678",1);
-        method.sendKeys(cardNumber3,"9876",1);
-        method.sendKeys(cardNumber4,"5432",1);
+        method.sendKeys(cardNumber1,"1234");
+        method.sendKeys(cardNumber2,"5678");
+        method.sendKeys(cardNumber3,"9876");
+        method.sendKeys(cardNumber4,"5432");
         method.selectByText(selectDate,"04");
-        method.selectByText(selectDate1,"1996");
-        method.sendKeys(cvvNumber,"453",1);
+        method.selectByText(selectDate1,"2029");
+        method.sendKeys(cvvNumber,"453");
     }
     public void errorPayment(){
 
@@ -118,6 +121,7 @@ public class CartPage {
     }
     public void logoutAccount(){
         method.click(logoClick);
+        method.waitBySeconds(1);
         method.hover(logoutHover);
         method.click(logoutButton);
     }

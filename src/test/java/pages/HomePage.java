@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 public class HomePage {
     private final BaseMethods method;
 
-    private final String selectProduct = "//div[@id='content']/div/div[1]/div/div[2]/ul/li[%d]";
+    private String selectProduct = "//div[@id='content']/div/div[1]/div/div[2]/ul/li[%d]";
     private final By logoClick = By.cssSelector(".logo-icon>a");
 
     private final By pointCatalog = By.xpath("//a[@href='puan-katalogu']");
