@@ -28,7 +28,6 @@ public class LoginPage {
         method.sendKeys(emailBox,"yamurzcan@gmail.com");
         method.sendKeys(passwordBox,"deneme1234");
         method.click(loginButton);
-        method.waitBySeconds(2);
         Assert.assertTrue(method.isElementVisible(accountVisible));
     }
 }

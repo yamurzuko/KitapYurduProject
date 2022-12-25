@@ -42,7 +42,7 @@ public class HomePage {
     public void bookListFilter(){
         method.click(logoClick);
         method.click(pointCatalog);
-        method.scrollAction(classicButton, 1);
+        method.scrollAction(classicButton);
         method.click(classicButton);
         method.selectByText(sortButton,"Yüksek Oylama");
         method.hover(allBookButton);
@@ -53,15 +53,14 @@ public class HomePage {
         var product = By.xpath(String.format(selectProduct,number));
 
         method.scrollAction(product);
-        method.click(product,2);
+        method.click(product);
         method.click(addCartButton);
     }
     public void removeProductFavorites(){
         method.scrollAction(myListButton);
-        method.waitBySeconds(1);
         method.hover(myListButton);
         method.click(favoriteButton);
         method.scrollAction(removeProduct);
-        method.click(removeProductButton,2);
+        method.click(removeProductButton);
     }
 }

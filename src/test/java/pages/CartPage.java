@@ -26,7 +26,7 @@ public class CartPage {
 
     private Long phone = 5940039393l;
 
-    private final By myCart = By.xpath("//div[@id='cart']/div/div[2]/h4");
+    private final By myCart = By.cssSelector("#cart>.heading>.fl>.common-sprite");
 
     private final By goToCartButton = By.xpath("//div[@id='cart']/div[2]/div[2]/div[2]/div/a");
 
@@ -74,35 +74,33 @@ public class CartPage {
     public void cartActions(){
         goToCartAndUpdate();
         updateToAddress();
-        method.click(continueButton,1);
-        method.click(continueButton,3);
+        method.click(continueButton);
+        method.click(continueButton);
         paymentMethod();
-        method.click(continueButton,1);
+        method.click(continueButton);
         errorPayment();
-        method.waitBySeconds(2);
         logoutAccount();
     }
     public void goToCartAndUpdate(){
-        method.click(myCart,1);
-        method.click(goToCartButton,1);
-        method.sendKeys(productCount,number.toString(),1);
+        method.click(myCart);
         method.waitBySeconds(1);
+        method.click(goToCartButton);
+        method.sendKeys(productCount,number.toString());
         method.findElement(productCount).sendKeys(Keys.ENTER);
-        method.click(buyButton,4);
+        method.click(buyButton);
     }
     public void updateToAddress(){
-        method.click(newAddress,1);
-        method.sendKeys(insertName,name,1);
+        method.click(newAddress);
+        method.sendKeys(insertName,name);
         method.sendKeys(insertSurname,surname);
         method.selectByText(insertCountry,country);
         method.selectByText(insertCity,city);
-        method.waitBySeconds(1);
         method.selectByText(insertDistrict,distict);
         method.sendKeys(insertAddress,address);
         method.sendKeys(insertPhone,phone.toString());
     }
     public void paymentMethod(){
-        method.sendKeys(cardHolderName,"sadasd",1);
+        method.sendKeys(cardHolderName,"sadasd");
         method.sendKeys(cardNumber1,"1234");
         method.sendKeys(cardNumber2,"5678");
         method.sendKeys(cardNumber3,"9876");
@@ -121,7 +119,6 @@ public class CartPage {
     }
     public void logoutAccount(){
         method.click(logoClick);
-        method.waitBySeconds(1);
         method.hover(logoutHover);
         method.click(logoutButton);
     }

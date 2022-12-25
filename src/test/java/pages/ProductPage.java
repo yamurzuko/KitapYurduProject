@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -34,16 +35,14 @@ public class ProductPage {
 
     public void searchAndFavoriteProducts(){
         searchProduct();
-        method.waitBySeconds(1);
         addProductToFavorite();
-        method.waitBySeconds(1);
         controlFavoriteProductCount();
     }
 
     private void searchProduct(){
         method.sendKeys(searchProduct, searchText);
         method.click(searchButton);
-        method.scrollAction(scrollBook, 2);
+        method.scrollAction(scrollBook);
     }
 
     private void addProductToFavorite(){
@@ -60,8 +59,7 @@ public class ProductPage {
         for (int i=0; i<favoriteProductCount; i++){
             var product = By.xpath(String.format(addToFavoriteXPath, arr[i]));
             method.scrollAction(product);
-            method.click(product, 1);
-            method.waitBySeconds(1);
+            method.click(product);
         }
 
         method.scrollAction(myListButton);
@@ -70,6 +68,7 @@ public class ProductPage {
     }
 
     private void controlFavoriteProductCount(){
+
         List<WebElement> elements = method.findElements(favoriteProductGridElement);
         Assert.assertEquals("Products in favorites are wrong.",4, elements.size());
         logger.info("Products in favorites are true.");

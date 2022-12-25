@@ -31,7 +31,8 @@ public class BaseMethods {
     }
 
     public WebElement findElement(By by) {
-        return driverWait.until(ExpectedConditions.presenceOfElementLocated(by));
+
+        return driverWait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
     public List<WebElement> findElements(By by) {
@@ -39,8 +40,10 @@ public class BaseMethods {
     }
 
     public void click(By by){
-        click(by, 0);
+        driverWait.until(ExpectedConditions.elementToBeClickable(by));
+        findElement(by).click();
     }
+    /*
     public void click(By by, long waitSeconds){
         if (waitSeconds != 0){
             waitBySeconds(waitSeconds);
@@ -48,6 +51,7 @@ public class BaseMethods {
         driverWait.until(ExpectedConditions.elementToBeClickable(by));
         findElement(by).click();
     }
+    */
     public void sendKeys(By by, String text){
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(by));
         findElement(by).sendKeys(text);
@@ -61,6 +65,7 @@ public class BaseMethods {
     }
     public boolean isElementVisible(By by){
         try{
+            Thread.sleep(1 * 1000);
             driverWait.until(ExpectedConditions.visibilityOfElementLocated(by));
             logger.info("Login successful");
             return true;
@@ -69,15 +74,9 @@ public class BaseMethods {
             return false;
         }
     }
-    public void scrollAction(By by) {
-        scrollAction(by, 0);
-    }
-
-    public void scrollAction(By by, long waitSeconds){
-        if (waitSeconds != 0){
-            waitBySeconds(waitSeconds);
-        }
+    public void scrollAction(By by){
         Actions action = new Actions(driver);
+        driverWait.until(ExpectedConditions.elementToBeClickable(by));
         action.moveToElement(findElement(by)).build().perform();
     }
 
